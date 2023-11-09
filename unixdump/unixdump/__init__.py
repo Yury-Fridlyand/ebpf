@@ -22,6 +22,7 @@ import hexdump
 import sys
 import time
 import fcntl
+from datetime import datetime
 
 from base64 import b64decode
 from binascii import hexlify
@@ -1426,7 +1427,7 @@ end:
 sun_path: {!r}, length {}
 '''
   printed_template = '''\
-{} PID {}.0x{:x} ({}) > {}.0x{:x} ({}), length {}{}
+{} {} PID {}.0x{:x} ({}) > {}.0x{:x} ({}), length {}{}
 '''
   written_template = '''\
 {} PID {}.0x{:x} ({}) > {}.0x{:x} ({})
@@ -1450,7 +1451,7 @@ command[{}]: {!r}
     peer_role = "S" if not is_bound else "C"
     data_truncated_str = " (truncated)" if data_is_truncated else ""
 
-    out_str += printed_template.format(
+    out_str += printed_template.format(datetime.now(),
                 sock_type_str, pid, sk_file, role,
                 peer_pid, peer_file, peer_role, data_len, data_truncated_str)
 
@@ -1458,16 +1459,16 @@ command[{}]: {!r}
     peer_pid_str = str(peer_pid)
     m = max(len(pid_str), len(peer_pid_str))
 
-    if args.verbose or (
-        (len(args.pids) != 1 or args.pids[0] != pid)
-        and len(args.pairs) != 1
-      ):
-      out_str += command_template.format(pid_str.rjust(m), command)
-    if args.verbose or (
-        (len(args.pids) != 1 or args.pids[0] != peer_pid)
-        and len(args.pairs) != 1
-      ):
-      out_str += command_template.format(peer_pid_str.rjust(m), peer_command)
+#    if args.verbose or (
+#        (len(args.pids) != 1 or args.pids[0] != pid)
+#        and len(args.pairs) != 1
+#      ):
+#      out_str += command_template.format(pid_str.rjust(m), command)
+#    if args.verbose or (
+#        (len(args.pids) != 1 or args.pids[0] != peer_pid)
+#        and len(args.pairs) != 1
+#      ):
+#      out_str += command_template.format(peer_pid_str.rjust(m), peer_command)
     return out_str
 
   def format_written_metadata(sun_path, sock_type, is_bound,
